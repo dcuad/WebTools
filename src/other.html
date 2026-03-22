@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WebTools - Information your browser can provide</title>
+
+        <link rel="stylesheet" type="text/css" href="common.css">
+    </head>
+
+    <body>
+
+        <h4>Tracking and execution</h4>
+        <div id="trackingAndExecution" class="box">
+            <ul>
+                <li><strong>Cookies Enabled:</strong> <span id="cookiesEnabled"></span></li>
+                    <li><strong>Online Status:</strong> <span id="onlineStatus"></span></li>
+                    <li><strong>Java Enabled:</strong> <span id="javaEnabled"></span></li>
+                    <li><strong>Do Not Track:</strong> <span id="doNotTrack"></span></li>
+                    <li><strong>Is webdriver:</strong> <span id="isWebdriver"></span></li>
+            </ul>
+        </div>
+
+        <h4>Screen Information</h4>
+        <div id="screenInfo" class="box">
+            <ul>
+                <li><strong>Screen Width:</strong> <span id="screenWidth"></span></li>
+                <li><strong>Screen Height:</strong> <span id="screenHeight"></span></li>
+                <li><strong>Color Depth:</strong> <span id="colorDepth"></span></li>
+            </ul>
+        </div>
+
+        <script>
+            // Tracking and execution
+            document.getElementById('cookiesEnabled').textContent = navigator.cookieEnabled;
+            document.getElementById('onlineStatus').textContent = navigator.onLine;
+            document.getElementById('javaEnabled').textContent = navigator.javaEnabled();
+            document.getElementById('doNotTrack').textContent = navigator.doNotTrack;
+            document.getElementById('isWebdriver').textContent = navigator.webdriver;
+
+            // Screen Information
+            document.getElementById('screenWidth').textContent = screen.width;
+            document.getElementById('screenHeight').textContent = screen.height;
+            document.getElementById('colorDepth').textContent = screen.colorDepth;
+        </script>
+    </body>
+</html>

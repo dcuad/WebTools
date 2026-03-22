@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"> 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WebTools - Information your browser can provide</title>
+
+        <link rel="stylesheet" type="text/css" href="common.css">
+    </head>
+
+    <body>
+        <h1>WebTools</h1>
+
+        <noscript>
+            <style type="text/css">
+                .pagecontainer {display:none;}
+            </style>
+            <div class="noscriptmsg">
+            You don't have javascript enabled. Not much more info can be provided :D
+            </div>
+        </noscript>
+
+        <h4>General Browser Information</h4>
+        <div id="browserInfo" class="box">
+            <ul>
+                <li><strong>User Agent:</strong> <span id="userAgent"></span></li>
+                <li><strong>Platform:</strong> <span id="platform"></span></li>
+                <li><strong>WebGL Vendor:</strong> <span id="webglVendor"></span></li>
+                <li><strong>WebGL Renderer:</strong> <span id="webglRenderer"></span></li>
+                <li><strong>Default Language:</strong> <span id="language"></span></li>
+                <li><strong>Vendor:</strong> <span id="vendor"></span></li>
+                <li><strong>Product:</strong> <span id="product"></span></li>
+                <li><strong>Product Sub:</strong> <span id="productSub"></span></li>
+            </ul>
+        </div>
+
+        <h4>Index of Information pages</h4>
+        <ul>
+            <li><a href="browser-support.html">Browser support</a></li>
+            <li><a href="media.html">Media</a></li>
+            <li><a href="other.html">Other</a></li>
+        </ul>
+
+
+        <script>
+            var webglRendererInfoText = ""
+            var webglVendorInfoText = ""
+            const gl = document.createElement('canvas').getContext('webgl');
+            if (!gl) {
+                webglNotPresentError =  " -- Error --> No Webgl Context found"
+                webglRendererInfoText= webglNotPresentError
+                webglVendorInfoText= webglNotPresentError
+            }else{
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (!debugInfo)
+                {
+                    debugInfoNoPresentError = "-- Error --> Debug info for webgl is not present "
+                    webglRendererInfoText= debugInfoNoPresentError
+                    webglVendorInfoText= debugInfoNoPresentError
+                }else{
+                    webglRendererInfoText = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+                    webglVendorInfoText = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)
+                }
+                
+            }
+            
+            // Browser Information
+            document.getElementById('userAgent').textContent = navigator.userAgent;
+            document.getElementById('platform').textContent = navigator.platform;
+            document.getElementById('language').textContent = navigator.language;
+            document.getElementById('vendor').textContent = navigator.vendor;
+            document.getElementById('product').textContent = navigator.product;
+            document.getElementById('productSub').textContent = navigator.productSub;
+            document.getElementById('webglVendor').textContent = webglVendorInfoText
+            document.getElementById('webglRenderer').textContent = webglRendererInfoText
+
+
+        </script>
+    </body> 
+</html>
