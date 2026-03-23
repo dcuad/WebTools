@@ -11,24 +11,33 @@
     <body>
         <h1>Media</h1>
         
-        <h3> Video </h3>
+
+        <div class="listofcontainers">
+            <div class="container">
+                <!--- Globally supported constraints by mediaDevices-->
+                <h4>Globally supported Constraints:</h4>
+                <div id="supportedConstraints" class="box">     
+                </div>
+            </div>
+            <div class="container">
+                <h4>User provided video constraints to select media stream (tap to edit)</h4>
+                <textarea id="setVideoConstraints" >
+                </textarea>
+                <button>Apply constraints and refresh</button>
+            </div>
+        </div>
 
         <video id="videoPlayer" class="center" width="640" height="480" 
                 autoplay="true" controls="true" muted="true"></video>
 
-
-        <!--- Globally supported constraints by mediaDevices-->
-        <h4>Globally supported Constraints:</h4>
-        <div id="supportedConstraints" class="box">     
-        </div>
         
-        <h4>User provided video constraints to select media stream (tap to edit)</h4>
-        <textarea id="setVideoConstraints" >
-        </textarea>
-    
-        <h4>Available MediaTrack capabilities</h4>
-        <div id="availableCapabilities" class="box">
-            
+        <div class="listofcontainers">
+            <div class="container">
+                <h4>Available MediaTrack capabilities</h4>
+                <div id="availableCapabilities" class="box">
+                    
+                </div>
+            </div>
         </div>
         
 
@@ -58,8 +67,20 @@
                         window.videoStream = stream;
                         
                         // Display available capabilities and constraints for this stream
-
-
+                        
+                        capabilitiesString = ""
+                        stream.getTracks().forEach(track => {
+                            capabilitiesString += "<h4> Label: " + track.label + " </h4>\n"
+                            capabilitiesString += "<ul>"
+                            capabilitiesString += "<li> <strong>Track ID: </strong> <span>" + track.id + "</span></li>"
+                            capabilitiesString += "<li> <strong>Track Kind: </strong> <span>" + track.kind + "</span></li>"
+                            capabilitiesString += "<li> <strong>Track Capabilities: </strong> </li>"
+                            capabilitiesString += "</ul>"
+                            
+                            capabilitiesString += "<div class='box'><pre>" + JSON.stringify( track.getCapabilities(), null, 2) + "</pre></div>"
+                            
+                        });
+                        document.getElementById("availableCapabilities").innerHTML = capabilitiesString
                     }).catch(function(error) {
                         console.error('Error accessing camera:', error);
                     });

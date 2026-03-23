@@ -21,10 +21,19 @@ textarea {
 .box {
     border: 1px solid black;
     padding-left: 20px;
-    width: 99%;
-    height: 200px;
+    padding-right: 20px;
+    height: 300px;
     overflow: scroll;
 
+}
+.listofcontainers {
+    display: flex;
+    gap: 10px;
+}
+.container{
+    flex: 1;
+    padding: 20px;
+    border: 2px solid black;
 }
 .center {
     margin-left: auto;
@@ -35,4 +44,10 @@ textarea {
 video {
     border:1px solid #000000;
     margin-bottom: 4%;
+    margin-top: 4%;
+}
+
+button {
+    margin-top: 20px;
+    margin-left: 20px;
 }

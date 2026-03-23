@@ -3,6 +3,7 @@ name: Deploy page
 on:
   push:
     branches: ["main"]
+    paths: ["src/**"]
 
   workflow_dispatch:
 
