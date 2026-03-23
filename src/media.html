@@ -10,7 +10,6 @@
 
     <body>
         <h1>Media</h1>
-        
 
         <div class="listofcontainers">
             <div class="container">
@@ -20,23 +19,31 @@
                 </div>
             </div>
             <div class="container">
+                <h4>Available devices</h4>
+                <div id="listOfDevices" class="box">
+                </div>
+            </div>
+
+            <div class="container">
                 <h4>User provided video constraints to select media stream (tap to edit)</h4>
                 <textarea id="setVideoConstraints" >
                 </textarea>
-                <button>Apply constraints and refresh</button>
+                <button  onclick="init_camera()">Apply constraints and refresh</button>
             </div>
         </div>
 
-        <video id="videoPlayer" class="center" width="640" height="480" 
+        <h3 id="cameraError" style="color:red;display: none;">Camera cannot be found or accessed</h3>
+        <video id="videoPlayer" class="center" width="1280" height="720" 
                 autoplay="true" controls="true" muted="true"></video>
 
         
         <div class="listofcontainers">
             <div class="container">
-                <h4>Available MediaTrack capabilities</h4>
-                <div id="availableCapabilities" class="box">
-                    
+                <h3>Available MediaTrack Information</h3>
+                <hr>
+                <div id="availableCapabilities">
                 </div>
+                <hr>
             </div>
         </div>
         
@@ -46,6 +53,8 @@
             const videoPlayer = document.getElementById('videoPlayer');
             const supportedConstraints = document.getElementById('supportedConstraints');
             const setVideoConstraints = document.getElementById('setVideoConstraints');
+            const cameraErrorMessage = document.getElementById('cameraError');
+            const listOfDevices = document.getElementById("listOfDevices");
 
 
             supportedConstraints.innerHTML = '<pre>' + JSON.stringify(navigator.mediaDevices.getSupportedConstraints(), null, 2) + '</pre>';
@@ -56,6 +65,30 @@
                     height: { min: 360, ideal: 720, max: 1080 }
                 }
             }, null, 2);
+
+            function enumerate_devices() {
+                enumerateDevicesString = "<ol>"
+                if (!navigator.mediaDevices?.enumerateDevices) {
+                    listOfDevices.innerHTML = "Error, enumerateDevices() is not supported by this browser"
+                } else {
+                    // List cameras and microphones.
+                    navigator.mediaDevices
+                        .enumerateDevices()
+                        .then((devices) => {
+                            devices.forEach((device) => {
+                                enumerateDevicesString += "<li><strong><u>" + device.label + "</u></strong></li>"
+                                enumerateDevicesString += "<ul><li><strong>Kind:</strong> " + device.kind + 
+                                                        '</li><li><strong>ID:</strong> "' + device.deviceId + '"</li></ul>'
+                            });
+                            enumerateDevicesString += "</ol>"
+                            listOfDevices.innerHTML = enumerateDevicesString    
+                        })
+                        .catch((err) => {
+                            enumerateDevicesString += "<li>" + '${err.name}: ${err.message}' + "</li>"
+                        });
+                        
+                }
+            }
 
             function init_camera() {
                 const constraints = JSON.parse(document.getElementById('setVideoConstraints').value);
@@ -68,20 +101,37 @@
                         
                         // Display available capabilities and constraints for this stream
                         
-                        capabilitiesString = ""
+                        capabilitiesString = "<div class='listofcontainers'>"
                         stream.getTracks().forEach(track => {
-                            capabilitiesString += "<h4> Label: " + track.label + " </h4>\n"
+                            capabilitiesString += "<div class='container'>"
+                            capabilitiesString += "<h4> Label: '" + track.label + "' </h4>\n"
                             capabilitiesString += "<ul>"
                             capabilitiesString += "<li> <strong>Track ID: </strong> <span>" + track.id + "</span></li>"
                             capabilitiesString += "<li> <strong>Track Kind: </strong> <span>" + track.kind + "</span></li>"
-                            capabilitiesString += "<li> <strong>Track Capabilities: </strong> </li>"
-                            capabilitiesString += "</ul>"
+                            capabilitiesString += "<li> <strong>Content hint: </strong> <span>" + track.contentHint + "</span></li>"
+                            capabilitiesString += "<li> <strong>Enabled: </strong> <span>" + track.enabled + "</span></li>"
                             
+                            capabilitiesString += "<li> <strong>Track Capabilities: </strong> </li>"
                             capabilitiesString += "<div class='box'><pre>" + JSON.stringify( track.getCapabilities(), null, 2) + "</pre></div>"
                             
+                            capabilitiesString += "<li> <strong>Track Settings: </strong> </li>"
+                            capabilitiesString += "<div class='box'><pre>" + JSON.stringify( track.getSettings(), null, 2) + "</pre></div>"
+                            
+                            capabilitiesString += "<li> <strong>Track Constraints: </strong> </li>"
+                            capabilitiesString += "<div class='box'><pre>" + JSON.stringify( track.getConstraints(), null, 2) + "</pre></div>"
+
+                            capabilitiesString += "</ul>"
+                            capabilitiesString += "</div>"
+                            
                         });
+                        capabilitiesString += "</div>"
                         document.getElementById("availableCapabilities").innerHTML = capabilitiesString
+
+                        enumerate_devices()
+                        
+                        cameraErrorMessage.style="display: none;"
                     }).catch(function(error) {
+                        cameraErrorMessage.style="color:red;"
                         console.error('Error accessing camera:', error);
                     });
             }
