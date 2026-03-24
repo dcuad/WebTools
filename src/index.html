@@ -28,7 +28,7 @@
         </ul>
 
         <h4>General Browser Information</h4>
-        <div id="browserInfo" class="box">
+        <div id="browserInfo" class="infinitebox" style="height:'500px'">
             <ul>
                 <u><h4>System data and configuration</h4></u>
                 <li><strong>User Agent:</strong> <span id="userAgent"></span></li>
@@ -42,6 +42,10 @@
                 <li><strong>WebGL Vendor:</strong> <span id="webglVendor"></span></li>
                 <li><strong>WebGL Renderer:</strong> <span id="webglRenderer"></span></li>
 
+                <u><h4>Device</h4></u>
+                <li><strong>Screen orientation: </strong> <span id="screenOrientation"></span></li>
+                <li><strong>Screen orientation angle: </strong> <span id="screenOrientationAngle"></span></li>
+                <li><strong>Window orientation: </strong> <span id="windowOrientation"></span></li>
             </ul>
         </div>
 
@@ -79,7 +83,9 @@
             document.getElementById('productSub').textContent = navigator.productSub;
             document.getElementById('webglVendor').textContent = webglVendorInfoText
             document.getElementById('webglRenderer').textContent = webglRendererInfoText
-
+            document.getElementById('screenOrientation').textContent = screen.orientation.type
+            document.getElementById('screenOrientationAngle').textContent = screen.orientation.angle
+            document.getElementById('windowOrientation').textContent = window.orientation ? window.orientation : " -null-"
 
         </script>
     </body> 
