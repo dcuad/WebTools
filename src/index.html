@@ -32,11 +32,15 @@
             <ul>
                 <u><h4>System data and configuration</h4></u>
                 <li><strong>User Agent:</strong> <span id="userAgent"></span></li>
+                <li><strong>App version:</strong> <span id="appVersion"></span></li>
                 <li><strong>Platform:</strong> <span id="platform"></span></li>
                 <li><strong>Vendor:</strong> <span id="vendor"></span></li>
                 <li><strong>Product:</strong> <span id="product"></span></li>
                 <li><strong>Product Sub:</strong> <span id="productSub"></span></li>
                 <li><strong>Default Language:</strong> <span id="language"></span></li>
+
+                <u><h4>User Agent Data</h4></u>
+                <li><strong>User Agent Data:</strong> <span id="userAgentData"></span></li>
                 
                 <u><h4>Graphics</h4></u>
                 <li><strong>WebGL Vendor:</strong> <span id="webglVendor"></span></li>
@@ -76,6 +80,7 @@
             
             // Browser Information
             document.getElementById('userAgent').textContent = navigator.userAgent;
+            document.getElementById('appVersion').textContent = navigator.appVersion;
             document.getElementById('platform').textContent = navigator.platform;
             document.getElementById('language').textContent = navigator.language;
             document.getElementById('vendor').textContent = navigator.vendor;
@@ -86,6 +91,8 @@
             document.getElementById('screenOrientation').textContent = screen.orientation.type
             document.getElementById('screenOrientationAngle').textContent = screen.orientation.angle
             document.getElementById('windowOrientation').textContent = window.orientation ? window.orientation : " -null-"
+            userAgentDataAsString = JSON.stringify(navigator.userAgentData, null, 2)
+            document.getElementById('userAgentData').textContent = userAgentDataAsString ? userAgentDataAsString : " -null- " 
 
         </script>
     </body> 
