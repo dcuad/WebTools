@@ -58,14 +58,15 @@
 
 
             supportedConstraints.innerHTML = '<pre>' + JSON.stringify(navigator.mediaDevices.getSupportedConstraints(), null, 2) + '</pre>';
-            setVideoConstraints.value = JSON.stringify({
-                audio: {},
-                video: {
-                    width: { ideal: 720 },
-                    height: { min: 360, ideal: 720, max: 1080 }
-                }
-            }, null, 2);
 
+            setVideoConstraints.value = JSON.stringify({
+                            audio: {},
+                            video: {
+                                width: { ideal: 1280 },
+                                height: { min: 360, ideal: 720, max: 1080 }
+                            }
+                        }, null, 2);
+            
             function enumerate_devices() {
                 enumerateDevicesString = "<ol>"
                 if (!navigator.mediaDevices?.enumerateDevices) {
@@ -86,6 +87,23 @@
                         .catch((err) => {
                             enumerateDevicesString += "<li>" + '${err.name}: ${err.message}' + "</li>"
                         });
+
+                        id = -1;
+                        // Get video track ID
+                        window.videoStream.getTracks().forEach( track => {
+                            if (track.kind === "video"){
+                                id = track.id
+                            }
+                        })
+                        // Default contraints json
+                        setVideoConstraints.value = JSON.stringify({
+                            audio: {},
+                            video: {
+                                deviceId: { exact: id },
+                                width: { ideal: 1280 },
+                                height: { min: 360, ideal: 720, max: 1080 }
+                            }
+                        }, null, 2);
                         
                 }
             }
