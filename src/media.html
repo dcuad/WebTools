@@ -76,10 +76,16 @@
                     navigator.mediaDevices
                         .enumerateDevices()
                         .then((devices) => {
-                            devices.forEach((device) => {
+                            devices.forEach((device) => {                      
                                 enumerateDevicesString += "<li><strong><u>" + device.label + "</u></strong></li>"
                                 enumerateDevicesString += "<ul><li><strong>Kind:</strong> " + device.kind + 
                                                         '</li><li><strong>ID:</strong> "' + device.deviceId + '"</li></ul>'
+                                
+                                if (device.getCapabilities) {
+                                  capabilitiesString += "<li> <strong>Device Capabilities: </strong> </li>"
+                                  capabilitiesString += "<div class='box'><pre>" + JSON.stringify( device.getCapabilities(), null, 2) + "</pre></div>"
+                            
+                                }
                             });
                             enumerateDevicesString += "</ol>"
                             listOfDevices.innerHTML = enumerateDevicesString    
